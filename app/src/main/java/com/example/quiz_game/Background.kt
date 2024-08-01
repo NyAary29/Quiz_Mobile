@@ -14,3 +14,4 @@ val colors = listOf(
 val gradientBrush = Brush.horizontalGradient(
     colors = colors
 )
+

@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -26,6 +28,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +51,7 @@ fun LoginScreen() {
             .fillMaxSize()
             .background(gradientBrush)
             .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
 
     ) {
         Column {
@@ -59,10 +65,9 @@ fun LoginScreen() {
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier){
-
-    var name = "toky"
-    var email = "wertyu@hgf.com"
-    var phone = "034 81 107 32"
+    var name by remember { mutableStateOf("toky") }
+    var email by remember { mutableStateOf("wertyu@hgf.com") }
+    var phone by remember { mutableStateOf("034 81 107 32") }
 
     Card (
         modifier = Modifier
@@ -73,7 +78,7 @@ fun LoginForm(modifier: Modifier = Modifier){
     ){
         Column(
             modifier = Modifier
-                .background(color = Color.White)
+                .background(gradientBrush)
                 .padding(bottom = 30.dp),
 
             verticalArrangement = Arrangement.Center,
@@ -174,6 +179,7 @@ fun LoginForm(modifier: Modifier = Modifier){
 
 @Composable
 fun ButtonValid(){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -188,7 +194,7 @@ fun ButtonValid(){
             modifier = Modifier.size(width = 170.dp, height = 45.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = androidx.compose.ui.graphics.Color.Black,
-                containerColor = androidx.compose.ui.graphics.Color.White
+                containerColor =  Color.White
             )
 
         ) {

@@ -16,6 +16,8 @@
 - Chaque collaborateur doit configurer leur nom et leur email pour les commits
 
   git config --global user.name "Votre Nom utilisateur"
+
+  
   git config --global user.email "votre-email@example.com"
   
 - Avant de commencer à travailler, les collaborateurs devraient créer une nouvelle branche pour leurs changements
@@ -25,7 +27,9 @@
 - Ajouter les fichiers modifiés et accepter les fichier modifier
 
   git add .
+
   git commit -m "Nom de la fonctionnalite"
+
   git push origin feature/nom-de-la-fonctionnalite
 
 

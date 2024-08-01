@@ -20,10 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Quiz_GameTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    LoginScreen()
                 }
             }
         }
@@ -42,6 +39,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     Quiz_GameTheme {
-        Greeting("Android")
+        LoginScreen()
     }
 }

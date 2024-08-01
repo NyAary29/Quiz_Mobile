@@ -7,7 +7,7 @@
 - Avant de commencer à travailler, les collaborateurs devraient créer une nouvelle branche pour leurs changements
 - Ajouter les fichiers modifiés et accepter les fichier modifier
   
-``bash
+`` bash
 ssh-keygen -t ed25519 -C "votre-email@example.com"
 ssh -T git@github.com
 git clone git@github.com:NyAary29/Quiz_Mobile.git

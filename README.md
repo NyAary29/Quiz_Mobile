@@ -1,7 +1,7 @@
 # Chaque collaborateur doit configurer une clé SSH et faire ce qui est dessus :
 - Générer une paire de clés SSH
   
-  ssh-keygen -t ed25519 -C "votre-email@example.com"
+  ```ssh-keygen -t ed25519 -C "votre-email@example.com"
   
 - Accédez aux paramètres de leur compte GitHub sous "SSH and GPG keys" et ajoutez la clé publique.
  

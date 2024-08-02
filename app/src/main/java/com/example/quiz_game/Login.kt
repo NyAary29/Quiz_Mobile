@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -26,6 +27,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
@@ -51,13 +55,12 @@ fun LoginScreen() {
             .fillMaxSize()
             .background(gradientBrush)
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
 
     ) {
         Column {
             Logo()
             LoginForm()
-            ButtonValid()
         }
     }
 }
@@ -65,15 +68,15 @@ fun LoginScreen() {
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier){
-    var name by remember { mutableStateOf("toky") }
-    var email by remember { mutableStateOf("wertyu@hgf.com") }
-    var phone by remember { mutableStateOf("034 81 107 32") }
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
 
+    val allFieldsFilled = name.isNotBlank() && email.isNotBlank() && phone.isNotBlank()
     Card (
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-
         elevation = CardDefaults.elevatedCardElevation(10.dp)
     ){
         Column(
@@ -148,7 +151,9 @@ fun LoginForm(modifier: Modifier = Modifier){
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
-                    .padding(bottom = 10.dp)
+                    .alpha(0.7f)
+                    .padding(bottom = 10.dp),
+                shape = RoundedCornerShape(20.dp)
             )
 
             OutlinedTextField(
@@ -160,6 +165,8 @@ fun LoginForm(modifier: Modifier = Modifier){
                     .fillMaxWidth()
                     .padding(10.dp)
                     .padding(bottom = 10.dp)
+                    .alpha(0.7f),
+                shape = RoundedCornerShape(20.dp)
             )
 
             OutlinedTextField(
@@ -170,41 +177,31 @@ fun LoginForm(modifier: Modifier = Modifier){
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
-                    .padding(bottom = 10.dp)
+                    .alpha(0.7f)
+                    .padding(bottom = 10.dp),
+                shape = RoundedCornerShape(20.dp)
             )
+
+            Spacer(modifier = Modifier.weight(3f))
+
+            Button(
+                onClick = { /* TODO */ },
+                modifier = Modifier.size(width = 170.dp, height = 45.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = androidx.compose.ui.graphics.Color.Black,
+                    containerColor =  if (allFieldsFilled) Color.Green else Color.White
+                )
+
+            ) {
+                Text(
+                    text = "Let's go",
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 16.sp
+                )
+            }
         }
     }
 
-}
-
-@Composable
-fun ButtonValid(){
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            onClick = { /* TODO */ },
-            modifier = Modifier.size(width = 170.dp, height = 45.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = androidx.compose.ui.graphics.Color.Black,
-                containerColor =  Color.White
-            )
-
-        ) {
-            Text(
-                text = "Let's go",
-                fontFamily = FontFamily.Serif,
-                fontSize = 16.sp
-            )
-        }
-    }
 }
 
 

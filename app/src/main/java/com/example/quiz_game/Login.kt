@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +28,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +39,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,14 +54,24 @@ fun LoginScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(gradientBrush)
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-
     ) {
-        Column {
-            Logo()
-            LoginForm()
+        Image(
+            painter = painterResource(id = R.drawable.wp13063009),
+            contentDescription = "background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White.copy(alpha = 0.1f))
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Column {
+                Logo()
+                LoginForm()
+            }
         }
     }
 }
@@ -77,15 +88,16 @@ fun LoginForm(modifier: Modifier = Modifier){
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = CardDefaults.elevatedCardElevation(10.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White.copy(alpha = 0.8f)
+        )
     ){
         Column(
             modifier = Modifier
-                .background(gradientBrush)
+                .background(color = Color.Transparent)
                 .padding(bottom = 30.dp),
-
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
             val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
@@ -150,9 +162,8 @@ fun LoginForm(modifier: Modifier = Modifier){
                 label = { Text("Nom") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
-                    .alpha(0.7f)
-                    .padding(bottom = 10.dp),
+                    .padding(15.dp)
+                    .alpha(0.7f),
                 shape = RoundedCornerShape(20.dp)
             )
 
@@ -163,8 +174,7 @@ fun LoginForm(modifier: Modifier = Modifier){
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
-                    .padding(bottom = 10.dp)
+                    .padding(15.dp)
                     .alpha(0.7f),
                 shape = RoundedCornerShape(20.dp)
             )
@@ -176,7 +186,7 @@ fun LoginForm(modifier: Modifier = Modifier){
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(15.dp)
                     .alpha(0.7f)
                     .padding(bottom = 10.dp),
                 shape = RoundedCornerShape(20.dp)
@@ -189,7 +199,7 @@ fun LoginForm(modifier: Modifier = Modifier){
                 modifier = Modifier.size(width = 170.dp, height = 45.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = androidx.compose.ui.graphics.Color.Black,
-                    containerColor =  if (allFieldsFilled) Color.Green else Color.White
+                    containerColor =  if (allFieldsFilled) Color.White else Color.Transparent.copy(alpha = 0.1f)
                 )
 
             ) {
@@ -203,8 +213,6 @@ fun LoginForm(modifier: Modifier = Modifier){
     }
 
 }
-
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

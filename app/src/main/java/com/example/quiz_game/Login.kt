@@ -1,5 +1,6 @@
 package com.example.quiz_game
 
+import android.widget.Toast
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -9,7 +10,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,17 +40,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.quiz_game.ui.theme.Quiz_GameTheme
-
+import java.util.regex.Pattern
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,20 +72,22 @@ fun LoginScreen() {
         ) {
             Column {
                 Logo()
-                LoginForm()
+                LoginForm(navController=navController)
             }
         }
     }
 }
 
-
 @Composable
-fun LoginForm(modifier: Modifier = Modifier){
+fun LoginForm(modifier: Modifier = Modifier,navController:NavHostController){
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
     val allFieldsFilled = name.isNotBlank() && email.isNotBlank() && phone.isNotBlank()
+
     Card (
         modifier = Modifier
             .fillMaxWidth()
@@ -104,11 +108,10 @@ fun LoginForm(modifier: Modifier = Modifier){
 
             val colors = listOf(
                 Color(0xFFFFA500),  // Orange
-                Color(0xFF90EE90), //vert
+                Color(0xFF90EE90), // Vert
                 Color(0xFFFFEB3B), // Jaune
                 Color(0xFF4285F4), // Bleu
                 Color(0xFF808080), // Gris
-
             )
             val scale by infiniteTransition.animateFloat(
                 initialValue = 0.8f,
@@ -132,6 +135,7 @@ fun LoginForm(modifier: Modifier = Modifier){
                 ),
                 label = "color"
             )
+
             Text(
                 text = "WELCOME",
                 fontSize = 30.sp,
@@ -159,31 +163,47 @@ fun LoginForm(modifier: Modifier = Modifier){
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Nom") },
+                label = { Text("Nom", color = Color.Black) },
+                textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
                     .alpha(0.7f),
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(20.dp),
+
             )
 
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
+                onValueChange = {
+                    email = it
+                    emailError = !isValidEmail(it)
+                },
+                label = { Text("Email",color = Color.Black) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
                     .alpha(0.7f),
+                isError = emailError,
                 shape = RoundedCornerShape(20.dp)
             )
+            if (emailError) {
+                Text(
+                    text = "Email invalide",
+                    color = Color.Red,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp)
+                )
+            }
 
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it },
-                label = { Text("Phone") },
+                label = { Text("Phone",color = Color.Black) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
@@ -195,13 +215,22 @@ fun LoginForm(modifier: Modifier = Modifier){
             Spacer(modifier = Modifier.weight(3f))
 
             Button(
-                onClick = { /* TODO */ },
+                onClick = {
+                    if (emailError) {
+                        Toast.makeText(context, "Veuillez entrer un email valide.", Toast.LENGTH_SHORT).show()
+                    } else if (allFieldsFilled) {
+                        // Gérer les données ici, par exemple, les afficher dans un Toast
+                        navController.navigate("quiz")
+
+                    } else {
+                        Toast.makeText(context, "Veuillez remplir tous les champs.", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 modifier = Modifier.size(width = 170.dp, height = 45.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = androidx.compose.ui.graphics.Color.Black,
                     containerColor =  if (allFieldsFilled) Color.White else Color.Transparent.copy(alpha = 0.1f)
                 )
-
             ) {
                 Text(
                     text = "Let's go",
@@ -211,13 +240,11 @@ fun LoginForm(modifier: Modifier = Modifier){
             }
         }
     }
-
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MyScreenPreview() {
-    Quiz_GameTheme {
-        LoginScreen()
-    }
+fun isValidEmail(email: String): Boolean {
+    val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    return Pattern.compile(emailPattern).matcher(email).matches()
 }
+
+
